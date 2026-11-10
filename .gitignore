@@ -1,0 +1,95 @@
+# ============================================================
+# TerraSpectra .gitignore
+# ============================================================
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+.venv/
+venv/
+env/
+ENV/
+dist/
+build/
+*.egg-info/
+.eggs/
+.mypy_cache/
+.ruff_cache/
+.pytest_cache/
+.hypothesis/
+*.pyo
+*.pyd
+pip-wheel-metadata/
+share/python-wheels/
+htmlcov/
+.coverage
+.coverage.*
+coverage.xml
+*.cover
+*.log
+.tox/
+.nox/
+nosetests.xml
+junit*.xml
+
+# Node / Web
+node_modules/
+web/dist/
+web/.env.local
+web/coverage/
+.pnp
+.pnp.js
+.yarn/
+
+# Data directories (large files, excluded from git; keep .gitkeep)
+data/raw/*
+!data/raw/.gitkeep
+data/interim/*
+!data/interim/.gitkeep
+data/processed/*
+!data/processed/.gitkeep
+data/synthetic/*
+!data/synthetic/.gitkeep
+data/catalog/*
+!data/catalog/.gitkeep
+
+# Model artifacts (tracked via LFS or excluded; keep .gitkeep)
+models_store/*
+!models_store/.gitkeep
+*.onnx
+*.h5
+
+# Large binary images in data directories
+data/**/*.tif
+data/**/*.img
+
+# Reports - figures (generated)
+reports/figures/*.png
+reports/figures/*.pdf
+reports/figures/*.svg
+
+# Environment / secrets
+.env
+.env.local
+.env.*.local
+*.env
+
+# OS files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+[Dd]esktop.ini
+
+# IDEs
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
