@@ -1,0 +1,4 @@
+# This directory holds trained model checkpoints (.pt) and exported models (.onnx).
+# All files in this directory are tracked via Git LFS.
+# Do NOT commit large model files directly to git history.
+

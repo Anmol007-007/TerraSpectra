@@ -1,32 +1,69 @@
-# TerraSpectra — IDE Project Pack
+# TerraSpectra — Hyperspectral Crop Disease Forecasting
 
-Hyperspectral Crop Disease Forecasting (3D-CNN + ViT, FastAPI, React + Deck.gl).
-This pack tells your IDE/AI assistant everything needed to build the project in **20 days × 52 commits**.
+![CI](https://github.com/Anmol007-007/TerraSpectra/actions/workflows/python-tests.yml/badge.svg)
+![Coverage](https://codecov.io/gh/Anmol007-007/TerraSpectra/branch/main/graph/badge.svg)
+![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)
 
-## Setup (2 minutes)
+TerraSpectra ingests hyperspectral satellite data cubes (200+ bands), runs a **3D-CNN + Vision Transformer hybrid** (PyTorch) that detects subtle chlorophyll and chemical changes, and **forecasts fungal blight ~3 weeks (21 days) before visible symptoms**. Results are served through a **FastAPI** inference API that tiles huge rasters on GPU and displayed in a **React + Deck.gl + Mapbox** 3D GIS dashboard with a red 5-acre risk zone on a 1,000-acre farm, analytics sidebar, and a historical timeline slider.
+
+---
+
+## Quick Start
+
 ```bash
-mkdir terraspectra && cd terraspectra && git init -b main
-# copy EVERYTHING from this pack into the repo root (including dotfiles: .cursorrules, .github/)
-git add -A && git commit -m "docs: add IDE project pack"
+# 1. Clone
+git clone https://github.com/Anmol007-007/TerraSpectra.git
+cd TerraSpectra
+
+# 2. Create virtual environment (Python 3.11 required)
+python -m venv .venv
+source .venv/bin/activate  # Windows: .venv\Scripts\activate
+
+# 3. Install all dependencies
+make install
+
+# 4. Generate synthetic data
+make synth
+
+# 5. Train the model
+make train
+
+# 6. Start the API server
+make serve
+
+# 7. In a separate terminal, start the web dashboard
+make web-dev
 ```
-Your IDE auto-reads: `AGENTS.md` (Codex/Claude Code/generic), `CLAUDE.md`, `.cursorrules` (Cursor), `.github/copilot-instructions.md` (Copilot).
 
-## Contents
-| Path | What it is |
-|---|---|
-| `AGENTS.md` (+ copies) | Master rules, protocol, coding standards, domain facts |
-| `docs/01–10` | Spec, architecture, repo tree, stack, data, ML, API, frontend, git protocol, QA |
-| `plan/DAY_01..20.md` | 52 numbered checklist commits per day, with exact commit messages (1,040 total) |
-| `plan/README.md` | Day index |
-| `scripts/check_commits.sh` | Verifies >= 52 commits today |
+---
 
-## Prompts to paste into your IDE
-**Start of each day:**
-> Read AGENTS.md and the docs it references. Today is Day N. Open plan/DAY_NN.md and execute the 52 steps in order. After each step, run lint + relevant tests and make exactly one commit with the given message. Stop after step 52 and run scripts/check_commits.sh.
+## Modules
 
-**If you fall behind:** "Continue plan/DAY_NN.md from the first unchecked step."
+| # | Module | Stack | Location |
+|---|--------|-------|----------|
+| 1 | Geospatial Data Pipeline | Python, Rasterio, GDAL, h5py, scikit-learn (PCA) | `src/terraspectra/data/` |
+| 2 | 3D-CNN & ViT Hybrid Model | PyTorch | `src/terraspectra/models/`, `training/` |
+| 3 | Inference API with Tiling | FastAPI, uvicorn, pydantic v2 | `src/terraspectra/api/` |
+| 4 | GIS Dashboard | React 18, TypeScript, Vite, Deck.gl 9, Mapbox GL | `web/` |
 
-**Mid-day resume:** "Run `git log --oneline -n 60` to see which steps are done, then continue."
+---
 
-## Note on commit counts
-Steps are real, small, atomic changes (a function, a test, a config) so 52/day is natural. Don't add empty or whitespace commits to hit the number — if short, split a step into a smaller meaningful one (e.g., separate test from implementation).
+## Documentation
+
+- [Project Specification](docs/01_PROJECT_SPEC.md)
+- [Architecture](docs/02_ARCHITECTURE.md)
+- [Repository Structure](docs/03_REPO_STRUCTURE.md)
+- [Tech Stack & Setup](docs/04_TECH_STACK_SETUP.md)
+- [Data Specification](docs/05_DATA_SPEC.md)
+- [ML Specification](docs/06_ML_SPEC.md)
+- [API Specification](docs/07_API_SPEC.md)
+- [Frontend Specification](docs/08_FRONTEND_SPEC.md)
+- [Git Commit Protocol](docs/09_GIT_COMMIT_PROTOCOL.md)
+- [Testing & QA](docs/10_TESTING_QA.md)
+- [Contributing](CONTRIBUTING.md)
+
+---
+
+## License
+
+[MIT](LICENSE) (c) 2026 TerraSpectra Contributors

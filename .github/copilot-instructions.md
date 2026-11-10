@@ -69,3 +69,5 @@ no TODO left without an issue note in `docs/KNOWN_ISSUES.md`.
 - Commit secrets (Mapbox token goes in `web/.env.local`).
 - Change the public API contract in `docs/07_API_SPEC.md` without updating the doc and tests.
 - Skip the memory-safety requirement for the Mid-Project "Extraction Audit".
+
+<!-- Verified for GitHub Copilot -->

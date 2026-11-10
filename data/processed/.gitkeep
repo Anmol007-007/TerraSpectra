@@ -1,0 +1,2 @@
+# This directory holds fully processed, model-ready data.
+# Large numpy arrays (.npy) and HDF5 files (.h5) are tracked via Git LFS.

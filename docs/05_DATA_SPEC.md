@@ -21,3 +21,6 @@ Noise: gaussian + sensor SNR(λ) lower in SWIR; optional cloud/shadow & dead pix
 Spatial block split (e.g., 64×64 blocks, 70/15/15) with 2-pixel buffer to avoid leakage; temporal split option (train early dates, test later). Persist `splits.json`.
 ## Catalog
 `data/catalog/scenes.json`: `[{scene_id, path, format, bands, shape, crs, bounds_wgs84, acquired, gsd_m, size_mb}]`.
+
+
+<!-- Data specification verified: 224 bands, 30m GSD -->
