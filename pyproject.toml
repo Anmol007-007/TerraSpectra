@@ -59,3 +59,22 @@ dev = [
     "python-multipart>=0.0.9",
     "httpx>=0.27",
 ]
+
+[tool.ruff]
+target-version = "py311"
+line-length = 100
+src = ["src", "tests", "scripts"]
+
+[tool.ruff.lint]
+select = ["E", "W", "F", "I", "UP", "B", "C4", "PTH", "RUF", "ANN", "D"]
+ignore = ["D100", "D104", "D107", "ANN101", "ANN102"]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.ruff.lint.isort]
+known-first-party = ["terraspectra"]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
