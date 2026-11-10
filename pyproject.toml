@@ -43,3 +43,7 @@ geo = [
     "pyproj>=3.6",
     "shapely>=2.0",
 ]
+ml = [
+    "torch>=2.2",
+    "tensorboard>=2.16",
+]
