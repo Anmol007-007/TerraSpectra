@@ -34,3 +34,6 @@ GeoJSON risk zones + analytics JSON → cached → API → dashboard.
 3. Multi-task heads: 3-class state, severity [0,1], days-to-symptoms (forecast).
 4. Tiling uses overlap + Hann weights to avoid seams.
 5. Jobs are async; results cached by hash(scene, model_version, params).
+
+
+<!-- Architecture v0.1 reviewed -->
