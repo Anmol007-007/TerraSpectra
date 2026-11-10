@@ -1,3 +1,5 @@
 type(scope): imperative summary
 
 # types: feat fix docs test refactor perf build ci chore style
+
+# Conventional Commits format enforced for TerraSpectra
