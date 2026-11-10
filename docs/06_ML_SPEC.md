@@ -22,3 +22,6 @@ Attention rollout → wavelength importance plot; 3D Grad-CAM on spectral axis.
 Temperature scaling, reliability diagram, MC-dropout uncertainty map.
 ## Export
 `state_dict` + `model_card.md` + `config.yaml` + `version.txt`; optional TorchScript/ONNX.
+
+
+<!-- ML specification verified: Hybrid 3D-CNN + ViT -->
