@@ -1,0 +1,2 @@
+# This directory holds interim (partially processed) data artifacts.
+# Large files are tracked via Git LFS. Do NOT commit raw rasters here.

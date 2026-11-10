@@ -1,0 +1,2 @@
+# This directory holds test fixture files (small sample data for unit tests).
+# Keep fixtures small (<500 KB each). Large fixtures should use factories instead.
