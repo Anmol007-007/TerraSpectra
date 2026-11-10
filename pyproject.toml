@@ -94,3 +94,33 @@ warn_unused_ignores = true
 warn_no_return = true
 no_implicit_reexport = true
 files = ["src/terraspectra"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = [
+    "--strict-markers",
+    "--tb=short",
+    "-v",
+]
+markers = [
+    "unit: fast isolated unit tests",
+    "integration: multi-component integration tests",
+    "api: FastAPI TestClient tests",
+    "slow: tests that take > 10 s",
+    "gpu: tests that require a CUDA device",
+]
+
+[tool.coverage.run]
+source = ["src/terraspectra"]
+branch = true
+omit = ["*/tests/*", "*/migrations/*"]
+
+[tool.coverage.report]
+show_missing = true
+fail_under = 85
+exclude_lines = [
+    "pragma: no cover",
+    "if TYPE_CHECKING:",
+    "raise NotImplementedError",
+    "@abstractmethod",
+]
