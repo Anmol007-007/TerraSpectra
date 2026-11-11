@@ -2,10 +2,19 @@
 
 from __future__ import annotations
 
-from enum import IntEnum
+from enum import Enum, IntEnum
+from typing import Any
 from pydantic import BaseModel, ConfigDict, Field
 
 
+class JobStatus(str, Enum):
+    """Status lifecycle of an asynchronous inference job."""
+
+    QUEUED = "queued"
+    RUNNING = "running"
+    SUCCEEDED = "succeeded"
+    FAILED = "failed"
+    CANCELLED = "cancelled"
 class PixelState(IntEnum):
     """Crop plant health condition classification for pixels."""
 
@@ -77,3 +86,16 @@ class TileSpec(_Base):
     width: int = Field(..., description="Tile width in pixels")
     pad_bottom: int = Field(default=0, description="Padding added to bottom edge")
     pad_right: int = Field(default=0, description="Padding added to right edge")
+
+
+class Job(_Base):
+    """Asynchronous prediction job tracking model."""
+
+    job_id: str = Field(..., description="Unique job UUID")
+    scene_id: str = Field(..., description="Target scene identifier")
+    status: JobStatus = Field(default=JobStatus.QUEUED, description="Execution status")
+    progress: float = Field(default=0.0, ge=0.0, le=1.0, description="Progress fraction 0-1")
+    created_at: str = Field(..., description="Job submission ISO timestamp")
+    completed_at: str | None = Field(default=None, description="Completion ISO timestamp")
+    error: str | None = Field(default=None, description="Error message if failed")
+    result: dict[str, Any] | None = Field(default=None, description="Result payload if succeeded")
