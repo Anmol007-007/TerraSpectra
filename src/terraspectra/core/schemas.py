@@ -114,3 +114,24 @@ class RiskZone(_Base):
         description="Prescribed mitigation action",
     )
     geometry: dict[str, Any] = Field(..., description="GeoJSON polygon geometry")
+
+
+class Anomaly(_Base):
+    """Spectral anomaly detection indicator."""
+
+    id: str = Field(..., description="Anomaly code identifier")
+    label: str = Field(..., description="Human-readable anomaly name")
+    wavelength_nm: float = Field(..., description="Associated diagnostic wavelength in nm")
+    delta: float = Field(..., description="Deviation from baseline healthy reflectance")
+    severity: str = Field(default="medium", description="Severity tier ('low', 'medium', 'high')")
+
+
+class AnalyticsSummary(_Base):
+    """Farm-level acreage risk analytics breakdown."""
+
+    total_acres: float = Field(default=1000.0, description="Total assessed farm acreage")
+    acres_at_risk: float = Field(..., description="Acreage classified at high risk")
+    acres_by_state: dict[str, float] = Field(
+        ..., description="Acreage mapped by state ('healthy', 'stressed', 'diseased')"
+    )
+    anomalies: list[Anomaly] = Field(default_factory=list, description="List of detected anomalies")
