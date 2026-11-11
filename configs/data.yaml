@@ -1,0 +1,25 @@
+# Data pipeline and sensor configuration
+sensor:
+  name: "Hyperion-like"
+  n_bands: 224
+  wavelength_min_nm: 400.0
+  wavelength_max_nm: 2500.0
+  gsd_m: 30.0
+  nodata_value: -9999.0
+  crs: "EPSG:32643"
+
+preprocessing:
+  pca_components: 32
+  pca_whiten: false
+  patch_size: 11
+  stride: 4
+  bad_band_ranges:
+    - [1350.0, 1460.0]
+    - [1790.0, 1960.0]
+    - [2400.0, 2500.0]
+
+scene:
+  farm_acres: 1000.0
+  farm_dim: [67, 67]
+  hotspot_acres: 5.0
+  hotspot_pixels: 23
