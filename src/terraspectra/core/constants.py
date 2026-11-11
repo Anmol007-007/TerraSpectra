@@ -62,3 +62,8 @@ NDWI_1240_NM: float = 1240.0
 # Chlorophyll Red-Edge Index (CIre) = (R780 / R710) - 1
 CIRE_780_NM: float = 780.0
 CIRE_710_NM: float = 710.0
+
+# Water vapour absorption band detail definitions
+WATER_VAPOUR_1400_NM: tuple[float, float] = (1350.0, 1460.0)
+WATER_VAPOUR_1900_NM: tuple[float, float] = (1790.0, 1960.0)
+SWIR_UPPER_LIMIT_NM: float = 2400.0
