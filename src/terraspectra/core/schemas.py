@@ -41,3 +41,20 @@ class WavelengthGrid(_Base):
     n_bands: int = Field(..., description="Total count of bands")
     wavelengths_nm: list[float] = Field(..., description="List of band centre wavelengths")
     valid_mask: list[bool] = Field(..., description="Boolean validity flags per band")
+
+
+class SceneMetadata(_Base):
+    """Metadata catalog record for an acquired or synthetic hyperspectral scene."""
+
+    scene_id: str = Field(..., description="Unique alphanumeric scene identifier")
+    path: str = Field(..., description="Relative or absolute path to raster file")
+    format: str = Field(default="GeoTIFF", description="Storage format ('GeoTIFF' or 'HDF5')")
+    bands: int = Field(..., description="Number of spectral bands")
+    rows: int = Field(..., description="Height in pixels")
+    cols: int = Field(..., description="Width in pixels")
+    crs: str = Field(..., description="Coordinate Reference System string")
+    bounds: GeoBounds = Field(..., description="Spatial extent of the scene")
+    gsd_m: float = Field(default=30.0, description="Ground sampling distance in metres")
+    acquired_date: str = Field(..., description="ISO 8601 acquisition timestamp")
+    sensor: str = Field(default="Synthetic", description="Sensor name")
+    size_mb: float = Field(..., description="File size in megabytes")
