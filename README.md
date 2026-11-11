@@ -48,19 +48,9 @@ make web-dev
 
 ---
 
-## Documentation
+## Contributing
 
-- [Project Specification](docs/01_PROJECT_SPEC.md)
-- [Architecture](docs/02_ARCHITECTURE.md)
-- [Repository Structure](docs/03_REPO_STRUCTURE.md)
-- [Tech Stack & Setup](docs/04_TECH_STACK_SETUP.md)
-- [Data Specification](docs/05_DATA_SPEC.md)
-- [ML Specification](docs/06_ML_SPEC.md)
-- [API Specification](docs/07_API_SPEC.md)
-- [Frontend Specification](docs/08_FRONTEND_SPEC.md)
-- [Git Commit Protocol](docs/09_GIT_COMMIT_PROTOCOL.md)
-- [Testing & QA](docs/10_TESTING_QA.md)
-- [Contributing](CONTRIBUTING.md)
+Please see [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines on code style, testing, and pull requests.
 
 ---
 

@@ -87,9 +87,22 @@ ehthumbs.db
 Thumbs.db
 [Dd]esktop.ini
 
-# IDEs
+# IDEs and AI assistant instruction files
 .idea/
 .vscode/
 *.swp
 *.swo
 *~
+
+# AI agent & coding assistant instructions / prompt files
+AGENTS.md
+CLAUDE.md
+CONTRIBUTING.md
+.cursorrules
+.cursor/
+.github/copilot-instructions.md
+.gemini*
+.antigravity*
+plan/
+docs/
+scripts/
