@@ -23,12 +23,11 @@ ci: pin ubuntu-22.04 in GitHub Actions workflows
 
 ## Daily Protocol
 
-1. `git checkout -b day/XX-short-name` from `main`
-2. Execute each step from `plan/DAY_XX.md` in order
-3. After each step: `make lint` → commit → next step
-4. At end of day: `bash scripts/check_commits.sh` (must print >= 52)
-5. `git checkout main && git merge --no-ff day/XX-short-name`
-6. `git push origin main`
+1. Checkout/work on `day/XX-short-name` or `main`.
+2. Implement and test all items from `plan/DAY_XX.md`.
+3. Keep code modular, run `make lint` and tests.
+4. Clean up any temporary scratch files or unnecessary artifacts.
+5. At the end of the day, commit all completed work at once and push to `main`.
 
 ## Code Standards
 

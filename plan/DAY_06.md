@@ -4,7 +4,7 @@ Goal: Memory-efficient PyTorch dataset with leakage-free splits; heatmap data co
 
 **Branch:** `day/06-work` · **Target:** exactly 52 commits (one per step) · Read `AGENTS.md` first.
 
-Rule: finish a step, run `make lint` + related tests, then `git commit -m "<message>"`. Do not combine steps.
+Rule: Complete all steps for the day, run `make lint` + related tests, delete unnecessary files, then commit everything at the end of the day all at once and push to main.
 
 
 ## A. Patch extraction

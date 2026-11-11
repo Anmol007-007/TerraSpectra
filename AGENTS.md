@@ -18,13 +18,12 @@ rasters on GPU, and show results in a **React + Deck.gl + Mapbox** 3D GIS dashbo
 | 3 | Inference API with tiling | FastAPI, uvicorn, pydantic v2 | `src/terraspectra/api/` |
 | 4 | GIS Dashboard | React 18, TypeScript, Vite, Deck.gl 9, Mapbox GL | `web/` |
 
-## 3. How to work (strict protocol)
-1. Open `plan/DAY_XX.md` for the current day. Each has **exactly 52 numbered commit steps**.
-2. Do the steps **in order**. One step = one small, real, atomic change = **one git commit**.
-3. After each step: run `make lint` (fast) and the relevant tests, once the current day's task is completed commit and push to git.
-4. Never create empty commits or whitespace-only padding commits. If a step is already
-   satisfied, improve it meaningfully (docstring, test, type hint) and commit that instead.
-5. At end of day run `scripts/check_commits.sh` — it must print `>= 52`.
+## 3. How to work (daily workflow)
+1. Open `plan/DAY_XX.md` for the current day.
+2. Complete all tasks and checklist items for that day in order.
+3. Keep code modular, clean, and properly tested/linted.
+4. Clean up any temporary or unnecessary files and content before committing.
+5. At the end of the day, once all tasks for that day are completed, commit all changes at once and push directly to `main` (or merge from the day's branch into `main` and push).
 6. Mid-Project Review = Day 10. Final Review = Day 20 (see `plan/DAY_10.md`, `plan/DAY_20.md`).
 
 ## 4. Read these docs before coding the related area
@@ -60,7 +59,8 @@ rasters on GPU, and show results in a **React + Deck.gl + Mapbox** 3D GIS dashbo
 - Real data (NASA Hyperion / ESA) is optional; **synthetic data generator is the default** and must work offline.
 
 ## 7. Definition of Done (per day)
-52 commits, CI green, tests added for new code, docs updated for new public behavior,
+All daily plan tasks implemented, CI green, tests added for new code, docs updated for new public behavior,
+all temporary files deleted, changes committed and pushed to git at the end of the day,
 no TODO left without an issue note in `docs/KNOWN_ISSUES.md`.
 
 ## 8. Do NOT
@@ -70,5 +70,4 @@ no TODO left without an issue note in `docs/KNOWN_ISSUES.md`.
 - Skip the memory-safety requirement for the Mid-Project "Extraction Audit".
 
 
-Read AGENTS.md. Today is Day n. Execute plan/DAY_n.md step by step, Once the today's task is completed push to git
-<!-- Verified and synchronized for Day 01 session -->
+Read AGENTS.md. Today is Day n. Execute plan/DAY_n.md. Once the today's task is completed, delete all unnecessary files and commit and push to git all at once.
