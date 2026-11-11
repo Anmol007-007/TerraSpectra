@@ -1,0 +1,32 @@
+# Model architecture hyperparameters for HybridCNNViT
+model:
+  name: "HybridCNNViT"
+  in_channels: 1
+  pca_components: 32
+  patch_size: 11
+  num_classes: 3
+  forecast_horizons: [7, 14, 21]
+
+cnn_stem:
+  init_channels: 16
+  res_channels: [32, 64]
+  se_reduction: 8
+  dropout: 0.1
+
+vit_backbone:
+  d_model: 128
+  token_group_size: 4
+  n_layers: 4
+  n_heads: 4
+  mlp_ratio: 4.0
+  dropout: 0.1
+  stochastic_depth: 0.1
+
+heads:
+  state_head:
+    num_classes: 3
+  severity_head:
+    output_dim: 1
+  forecast_head:
+    output_dim: 1
+    horizons: 3
