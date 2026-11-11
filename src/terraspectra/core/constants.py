@@ -1,6 +1,14 @@
-"""Project-wide physical and numerical constants."""
+"""Project-wide physical, spectral, and numerical constants."""
 
 from __future__ import annotations
+
+# Spectral wavelength regions (nm)
+VNIR_MIN_NM: float = 400.0
+VNIR_MAX_NM: float = 1000.0
+SWIR_MIN_NM: float = 1000.0
+SWIR_MAX_NM: float = 2500.0
+RED_EDGE_MIN_NM: float = 680.0
+RED_EDGE_MAX_NM: float = 750.0
 
 # Sensor
 GSD_M: float = 30.0  # Ground sampling distance in metres (Hyperion-like)
