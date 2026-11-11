@@ -66,3 +66,14 @@ class SceneMetadata(_Base):
     acquired_date: str = Field(..., description="ISO 8601 acquisition timestamp")
     sensor: str = Field(default="Synthetic", description="Sensor name")
     size_mb: float = Field(..., description="File size in megabytes")
+
+
+class TileSpec(_Base):
+    """Window specification for tiling large rasters during inference."""
+
+    row_start: int = Field(..., description="Starting row index in the scene")
+    col_start: int = Field(..., description="Starting column index in the scene")
+    height: int = Field(..., description="Tile height in pixels")
+    width: int = Field(..., description="Tile width in pixels")
+    pad_bottom: int = Field(default=0, description="Padding added to bottom edge")
+    pad_right: int = Field(default=0, description="Padding added to right edge")
