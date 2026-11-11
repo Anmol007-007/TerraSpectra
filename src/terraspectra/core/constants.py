@@ -45,3 +45,20 @@ CLASS_NAMES: tuple[str, ...] = ("healthy", "stressed", "diseased")
 
 # CRS
 DEFAULT_CRS: str = "EPSG:32643"  # UTM Zone 43N
+
+# Diagnostic index wavelength bands (nm)
+# NDVI = (R800 - R670) / (R800 + R670)
+NDVI_NIR_NM: float = 800.0
+NDVI_RED_NM: float = 670.0
+
+# Photochemical Reflectance Index (PRI) = (R531 - R570) / (R531 + R570)
+PRI_531_NM: float = 531.0
+PRI_570_NM: float = 570.0
+
+# Normalized Difference Water Index (NDWI) = (R860 - R1240) / (R860 + R1240)
+NDWI_860_NM: float = 860.0
+NDWI_1240_NM: float = 1240.0
+
+# Chlorophyll Red-Edge Index (CIre) = (R780 / R710) - 1
+CIRE_780_NM: float = 780.0
+CIRE_710_NM: float = 710.0
