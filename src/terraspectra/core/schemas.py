@@ -99,3 +99,18 @@ class Job(_Base):
     completed_at: str | None = Field(default=None, description="Completion ISO timestamp")
     error: str | None = Field(default=None, description="Error message if failed")
     result: dict[str, Any] | None = Field(default=None, description="Result payload if succeeded")
+
+
+class RiskZone(_Base):
+    """Vector polygon risk zone (e.g. 5-acre fungal blight outbreak area)."""
+
+    zone_id: str = Field(..., description="Unique identifier for the detected risk zone")
+    area_acres: float = Field(..., description="Calculated area of the zone in acres")
+    mean_risk: float = Field(..., ge=0.0, le=1.0, description="Mean disease probability")
+    lead_time_days: int = Field(default=21, description="Forecasted days before visible symptoms")
+    disease: str = Field(default="fungal_blight", description="Identified disease type")
+    recommended_action: str = Field(
+        default="Targeted preventative fungicide application",
+        description="Prescribed mitigation action",
+    )
+    geometry: dict[str, Any] = Field(..., description="GeoJSON polygon geometry")
