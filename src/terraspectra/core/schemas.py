@@ -2,9 +2,17 @@
 
 from __future__ import annotations
 
+from enum import IntEnum
 from pydantic import BaseModel, ConfigDict, Field
 
 
+class PixelState(IntEnum):
+    """Crop plant health condition classification for pixels."""
+
+    HEALTHY = 0
+    PRE_SYMPTOMATIC = 1
+    VISIBLY_DISEASED = 2
+    INVALID = 255
 class _Base(BaseModel):
     """Shared base model: forbid extra fields, use attribute access."""
 
