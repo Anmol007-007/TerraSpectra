@@ -1,0 +1,21 @@
+# Default system configuration for TerraSpectra
+project:
+  name: "terraspectra"
+  version: "0.1.0"
+  description: "Hyperspectral Crop Disease Forecasting"
+
+system:
+  seed: 42
+  device: "auto"
+  num_workers: 4
+  precision: "16-mixed"
+
+logging:
+  level: "INFO"
+  format: "rich"
+  save_dir: "logs"
+
+storage:
+  data_dir: "data"
+  models_dir: "models_store"
+  reports_dir: "reports"
