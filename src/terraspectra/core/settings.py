@@ -3,9 +3,12 @@
 from __future__ import annotations
 
 from pathlib import Path
+from typing import Literal
 
 from pydantic import Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
+
+DeviceType = Literal["auto", "cpu", "cuda"]
 
 
 class Settings(BaseSettings):
@@ -23,6 +26,13 @@ class Settings(BaseSettings):
     models_dir: Path = Field(
         default=Path("models_store"), description="Path to model checkpoints store"
     )
+    device: DeviceType = Field(
+        default="auto", description="Compute device selection ('auto', 'cpu', or 'cuda')"
+    )
+    max_upload_mb: int = Field(
+        default=500, description="Maximum scene upload file size in megabytes"
+    )
+    api_key: str | None = Field(default=None, description="Optional API key for client auth")
 
     @property
     def raw_data_dir(self) -> Path:
