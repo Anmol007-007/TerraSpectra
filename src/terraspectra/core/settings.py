@@ -5,8 +5,19 @@ from __future__ import annotations
 from pathlib import Path
 from typing import Literal
 
-from pydantic import Field
-from pydantic_settings import BaseSettings, SettingsConfigDict
+from pydantic import BaseModel, Field
+
+try:
+    from pydantic_settings import BaseSettings, SettingsConfigDict
+except ImportError:
+    # Graceful fallback when pydantic-settings is not installed in the active environment
+    class BaseSettings(BaseModel):  # type: ignore[no-redef]
+        """Fallback BaseSettings using standard Pydantic BaseModel."""
+
+    class SettingsConfigDict(dict):  # type: ignore[no-redef]
+        """Fallback SettingsConfigDict."""
+        def __init__(self, **kwargs: Any) -> None:
+            super().__init__(**kwargs)
 
 DeviceType = Literal["auto", "cpu", "cuda"]
 
