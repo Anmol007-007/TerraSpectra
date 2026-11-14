@@ -1,54 +1,19 @@
 import React from "react";
+import { LayerPanel } from "./LayerPanel";
 
-interface SidebarProps {
-  opacity?: number;
-  onOpacityChange?: (val: number) => void;
-  threshold?: number;
-  onThresholdChange?: (val: number) => void;
-}
-
-export const Sidebar: React.FC<SidebarProps> = ({
-  opacity = 0.8,
-  onOpacityChange,
-  threshold = 0.5,
-  onThresholdChange,
-}) => {
+export const Sidebar: React.FC = () => {
   return (
-    <aside className="w-64 bg-[#141d36] border-r border-[#3a506b] p-4 flex flex-col space-y-6 text-sm">
-      <div>
-        <h2 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-3">
-          Layer Controls
+    <aside className="w-72 bg-[#141d36] border-r border-[#3a506b] p-4 flex flex-col space-y-6 text-sm overflow-y-auto">
+      <div className="flex items-center justify-between border-b border-[#3a506b]/40 pb-2">
+        <h2 className="text-xs font-bold uppercase tracking-wider text-slate-300">
+          GIS Layers & Analysis
         </h2>
-        <div className="space-y-4">
-          <div>
-            <label className="text-xs text-slate-300 block mb-1">Heatmap Opacity</label>
-            <input
-              type="range"
-              min="0"
-              max="1"
-              step="0.05"
-              value={opacity}
-              onChange={(e) => onOpacityChange?.(parseFloat(e.target.value))}
-              className="w-full accent-[#5bc0be]"
-            />
-          </div>
-
-          <div>
-            <label className="text-xs text-slate-300 block mb-1">
-              Risk Threshold ({threshold.toFixed(2)})
-            </label>
-            <input
-              type="range"
-              min="0.1"
-              max="0.9"
-              step="0.05"
-              value={threshold}
-              onChange={(e) => onThresholdChange?.(parseFloat(e.target.value))}
-              className="w-full accent-[#ef4444]"
-            />
-          </div>
-        </div>
+        <span className="text-[10px] text-[#5bc0be] bg-[#0b132b] px-2 py-0.5 rounded border border-[#3a506b]">
+          v0.1.0
+        </span>
       </div>
+
+      <LayerPanel />
 
       <div className="border-t border-[#3a506b]/50 pt-4">
         <h2 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">
@@ -61,11 +26,11 @@ export const Sidebar: React.FC<SidebarProps> = ({
           </div>
           <div className="flex items-center space-x-2">
             <span className="w-3 h-3 rounded-sm bg-[#f59e0b]" />
-            <span>Pre-symptomatic Stress</span>
+            <span>Pre-symptomatic Stress (21-Day)</span>
           </div>
           <div className="flex items-center space-x-2">
             <span className="w-3 h-3 rounded-sm bg-[#ef4444]" />
-            <span>Fungal Blight Risk (5-acre)</span>
+            <span>Fungal Blight Risk (5-Acre Zone)</span>
           </div>
         </div>
       </div>
