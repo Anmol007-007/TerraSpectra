@@ -1,6 +1,6 @@
 import React from "react";
 import DeckGL from "@deck.gl/react";
-import type { LayersList } from "@deck.gl/core";
+import type { LayersList, DeckProps } from "@deck.gl/core";
 
 export interface DeckGLOverlayProps {
   viewState: {
@@ -10,7 +10,7 @@ export interface DeckGLOverlayProps {
     pitch?: number;
     bearing?: number;
   };
-  onViewStateChange?: (params: { viewState: any }) => void;
+  onViewStateChange?: DeckProps["onViewStateChange"];
   layers?: LayersList;
   children?: React.ReactNode;
 }

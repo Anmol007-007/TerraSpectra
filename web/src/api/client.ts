@@ -27,7 +27,7 @@ export async function apiClient<T>(
   if (!response.ok) {
     let errorData = { code: "UNKNOWN_ERROR", message: response.statusText };
     try {
-      errorData = await response.json();
+      errorData = (await response.json()) as { code: string; message: string };
     } catch {
       // Keep statusText fallback
     }

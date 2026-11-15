@@ -6,9 +6,17 @@ import { useLayerStore } from "../store/layerStore";
 import { FARM_BOUNDS, fitBounds } from "../utils/geo";
 import { MAP_DEFAULTS } from "../utils/tokens";
 
+export interface MapViewState {
+  longitude: number;
+  latitude: number;
+  zoom: number;
+  pitch: number;
+  bearing: number;
+}
+
 export const MapContainer: React.FC = () => {
   const initial = fitBounds(FARM_BOUNDS);
-  const [viewState, setViewState] = useState({
+  const [viewState, setViewState] = useState<MapViewState>({
     longitude: initial.longitude,
     latitude: initial.latitude,
     zoom: initial.zoom,
@@ -16,8 +24,8 @@ export const MapContainer: React.FC = () => {
     bearing: MAP_DEFAULTS.BEARING,
   });
 
-  const { visibility, heatmapOpacity } = useLayerStore();
-  const layers = buildDeckLayers(visibility, heatmapOpacity);
+  const { visibility, heatmapOpacity, riskThreshold } = useLayerStore();
+  const layers = buildDeckLayers(visibility, heatmapOpacity, riskThreshold);
 
   const handleFlyToFarm = () => {
     const target = fitBounds(FARM_BOUNDS);
@@ -34,7 +42,10 @@ export const MapContainer: React.FC = () => {
       <BaseMap initialViewState={viewState}>
         <DeckGLOverlay
           viewState={viewState}
-          onViewStateChange={({ viewState: vs }) => setViewState(vs)}
+          onViewStateChange={(params) => {
+            const vs = params.viewState as unknown as MapViewState;
+            setViewState(vs);
+          }}
           layers={layers}
         />
       </BaseMap>

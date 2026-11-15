@@ -5,6 +5,11 @@
 import { GeoJsonLayer } from "@deck.gl/layers";
 import type { LayersList } from "@deck.gl/core";
 import { MOCK_FARM_BOUNDARY, MOCK_PARCELS } from "./farmBoundary";
+import { createHeatmapLayer } from "./heatmapLayer";
+import mockPredictionData from "../api/mocks/farm_001_result.json";
+import type { FarmPredictionResult, PredictionCell } from "../types/heatmap";
+
+const MOCK_RESULT = mockPredictionData as unknown as FarmPredictionResult;
 
 export interface LayerVisibility {
   farmBoundary: boolean;
@@ -25,6 +30,8 @@ export const DEFAULT_LAYER_VISIBILITY: LayerVisibility = {
 export function buildDeckLayers(
   visibility: LayerVisibility = DEFAULT_LAYER_VISIBILITY,
   opacity: number = 0.85,
+  riskThreshold: number = 0.0,
+  cells: PredictionCell[] = MOCK_RESULT.cells,
 ): LayersList {
   const layers: LayersList = [];
 
@@ -33,7 +40,7 @@ export function buildDeckLayers(
     layers.push(
       new GeoJsonLayer({
         id: "layer-farm-boundary",
-        data: MOCK_FARM_BOUNDARY as any,
+        data: MOCK_FARM_BOUNDARY as unknown as GeoJSON.FeatureCollection,
         filled: true,
         stroked: true,
         getFillColor: [91, 192, 190, 25], // Subdued cyan wash
@@ -50,7 +57,7 @@ export function buildDeckLayers(
     layers.push(
       new GeoJsonLayer({
         id: "layer-parcels",
-        data: MOCK_PARCELS as any,
+        data: MOCK_PARCELS as unknown as GeoJSON.FeatureCollection,
         filled: false,
         stroked: true,
         getLineColor: [248, 250, 252, 160], // Thin white boundary lines
@@ -59,6 +66,20 @@ export function buildDeckLayers(
         dashJustified: true,
         getDashArray: [4, 4],
         pickable: true,
+      })
+    );
+  }
+
+  // 3. 3D Disease Risk GridCellLayer
+  if (visibility.heatmap && cells.length > 0) {
+    layers.push(
+      createHeatmapLayer({
+        id: "layer-disease-heatmap",
+        data: cells,
+        opacity,
+        riskThreshold,
+        cellSize: 30,
+        elevationScale: 40,
       })
     );
   }

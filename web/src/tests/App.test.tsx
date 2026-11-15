@@ -8,9 +8,10 @@ describe("App", () => {
     expect(screen.getByRole("heading", { name: /terraspectra/i })).toBeInTheDocument();
   });
 
-  it("renders the map placeholder", () => {
+  it("renders the sidebar GIS layers controls", () => {
     render(<App />);
-    expect(screen.getByText(/Map placeholder/i)).toBeInTheDocument();
+    expect(screen.getByTestId("layer-panel")).toBeInTheDocument();
+    expect(screen.getByText(/GIS Layers & Analysis/i)).toBeInTheDocument();
   });
 });
 

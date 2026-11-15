@@ -61,7 +61,9 @@ export const BaseMap: React.FC<BaseMapProps> = ({
   const token = env.mapboxToken;
   const isMapbox = Boolean(token) && env.basemap === "mapbox";
 
-  const mapStyle = isMapbox ? MAPBOX_STYLES[currentStyle] : (OPEN_FALLBACK_STYLE as any);
+  const mapStyle = isMapbox
+    ? MAPBOX_STYLES[currentStyle]
+    : (OPEN_FALLBACK_STYLE as unknown as string);
 
   return (
     <div className="relative w-full h-full" data-testid="base-map-container">
