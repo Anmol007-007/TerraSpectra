@@ -65,3 +65,44 @@ export function filterCellsByThreshold(
 ): PredictionCell[] {
   return cells.filter((c) => c.risk >= threshold);
 }
+
+/**
+ * Convert geographic coordinates (lon, lat) to raster grid indices (r, c).
+ */
+export function geoToCellIndex(
+  lon: number,
+  lat: number,
+  bounds: [number, number, number, number],
+  gridShape: [number, number],
+): { r: number; c: number } | null {
+  const [minLon, minLat, maxLon, maxLat] = bounds;
+  const [rows, cols] = gridShape;
+  if (lon < minLon || lon > maxLon || lat < minLat || lat > maxLat) {
+    return null;
+  }
+  const colFraction = (lon - minLon) / (maxLon - minLon);
+  const rowFraction = (maxLat - lat) / (maxLat - minLat);
+  const c = Math.min(cols - 1, Math.max(0, Math.floor(colFraction * cols)));
+  const r = Math.min(rows - 1, Math.max(0, Math.floor(rowFraction * rows)));
+  return { r, c };
+}
+
+/**
+ * Generate 5-point closed polygon coordinates for a 30m GSD grid pixel.
+ */
+export function cellToPolygon(
+  cell: PredictionCell,
+  cellSizeM: number = 30,
+): [number, number][] {
+  const latM = 111320;
+  const lonM = 111320 * Math.cos((cell.lat * Math.PI) / 180);
+  const halfLon = (cellSizeM / 2) / lonM;
+  const halfLat = (cellSizeM / 2) / latM;
+  return [
+    [cell.lon - halfLon, cell.lat - halfLat],
+    [cell.lon + halfLon, cell.lat - halfLat],
+    [cell.lon + halfLon, cell.lat + halfLat],
+    [cell.lon - halfLon, cell.lat + halfLat],
+    [cell.lon - halfLon, cell.lat - halfLat],
+  ];
+}

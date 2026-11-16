@@ -52,3 +52,7 @@ class ModelRegistry:
     def list_models(self) -> list[str]:
         """Return sorted list of registered model names."""
         return sorted(self._registry)
+
+
+# Global singleton registry
+model_registry = ModelRegistry()

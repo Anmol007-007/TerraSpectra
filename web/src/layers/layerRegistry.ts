@@ -5,7 +5,7 @@
 import { GeoJsonLayer } from "@deck.gl/layers";
 import type { LayersList } from "@deck.gl/core";
 import { MOCK_FARM_BOUNDARY, MOCK_PARCELS } from "./farmBoundary";
-import { createHeatmapLayer } from "./heatmapLayer";
+import { createPixelGridLayer } from "./pixelGridLayer";
 import mockPredictionData from "../api/mocks/farm_001_result.json";
 import type { FarmPredictionResult, PredictionCell } from "../types/heatmap";
 
@@ -27,12 +27,39 @@ export const DEFAULT_LAYER_VISIBILITY: LayerVisibility = {
   uncertainty: false,
 };
 
+export interface DeckLayersOptions {
+  visibility?: LayerVisibility;
+  opacity?: number;
+  riskThreshold?: number;
+  cells?: PredictionCell[];
+  selectedCell?: PredictionCell | null;
+  hoveredCell?: PredictionCell | null;
+  onHoverCell?: (info: { object?: PredictionCell; x: number; y: number }) => void;
+  onClickCell?: (info: { object?: PredictionCell; x: number; y: number }) => void;
+}
+
 export function buildDeckLayers(
-  visibility: LayerVisibility = DEFAULT_LAYER_VISIBILITY,
-  opacity: number = 0.85,
-  riskThreshold: number = 0.0,
-  cells: PredictionCell[] = MOCK_RESULT.cells,
+  optionsOrVisibility: LayerVisibility | DeckLayersOptions = DEFAULT_LAYER_VISIBILITY,
+  opacityParam: number = 0.85,
+  riskThresholdParam: number = 0.0,
+  cellsParam: PredictionCell[] = MOCK_RESULT.cells,
 ): LayersList {
+  // Support both object options and legacy argument list
+  const opts: DeckLayersOptions =
+    "farmBoundary" in optionsOrVisibility
+      ? {
+          visibility: optionsOrVisibility as LayerVisibility,
+          opacity: opacityParam,
+          riskThreshold: riskThresholdParam,
+          cells: cellsParam,
+        }
+      : (optionsOrVisibility as DeckLayersOptions);
+
+  const visibility = opts.visibility || DEFAULT_LAYER_VISIBILITY;
+  const opacity = opts.opacity ?? 0.85;
+  const riskThreshold = opts.riskThreshold ?? 0.0;
+  const cells = opts.cells || MOCK_RESULT.cells;
+
   const layers: LayersList = [];
 
   // 1. 1,000-acre Farm Outer Boundary Layer
@@ -70,15 +97,18 @@ export function buildDeckLayers(
     );
   }
 
-  // 3. 3D Disease Risk GridCellLayer
+  // 3. Interactive 3D Disease Risk Pixel Grid Layer
   if (visibility.heatmap && cells.length > 0) {
     layers.push(
-      createHeatmapLayer({
+      createPixelGridLayer({
         id: "layer-disease-heatmap",
         data: cells,
         opacity,
         riskThreshold,
-        cellSize: 30,
+        selectedCell: opts.selectedCell,
+        hoveredCell: opts.hoveredCell,
+        onHover: opts.onHoverCell,
+        onClick: opts.onClickCell,
         elevationScale: 40,
       })
     );

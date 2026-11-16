@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { BaseMap } from "./BaseMap";
 import { DeckGLOverlay } from "./DeckGLOverlay";
+import { PixelInspector } from "./PixelInspector";
 import { buildDeckLayers } from "../layers/layerRegistry";
 import { useLayerStore } from "../store/layerStore";
 import { FARM_BOUNDS, fitBounds } from "../utils/geo";
@@ -24,8 +25,25 @@ export const MapContainer: React.FC = () => {
     bearing: MAP_DEFAULTS.BEARING,
   });
 
-  const { visibility, heatmapOpacity, riskThreshold } = useLayerStore();
-  const layers = buildDeckLayers(visibility, heatmapOpacity, riskThreshold);
+  const {
+    visibility,
+    heatmapOpacity,
+    riskThreshold,
+    hoveredCell,
+    selectedCell,
+    setHoveredCell,
+    setSelectedCell,
+  } = useLayerStore();
+
+  const layers = buildDeckLayers({
+    visibility,
+    opacity: heatmapOpacity,
+    riskThreshold,
+    hoveredCell,
+    selectedCell,
+    onHoverCell: (info) => setHoveredCell(info.object || null),
+    onClickCell: (info) => setSelectedCell(info.object || null),
+  });
 
   const handleFlyToFarm = () => {
     const target = fitBounds(FARM_BOUNDS);
@@ -49,6 +67,11 @@ export const MapContainer: React.FC = () => {
           layers={layers}
         />
       </BaseMap>
+
+      {/* Interactive Pixel Inspector Overlay */}
+      <div className="absolute top-4 right-4 z-10">
+        <PixelInspector />
+      </div>
 
       {/* Fly-to-farm reset camera button */}
       <div className="absolute bottom-6 right-6 z-10">
