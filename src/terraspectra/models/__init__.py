@@ -2,6 +2,7 @@
 
 from terraspectra.models.blocks3d import (
     Conv3DBlock,
+    Dropout3D,
     GlobalPoolingHead,
     ResidualBlock3D,
     SESpectralAttention,
@@ -22,6 +23,7 @@ model_registry.register("cnn3d_v1", CNN3DClassifier)
 
 __all__ = [
     "Conv3DBlock",
+    "Dropout3D",
     "SESpectralAttention",
     "ResidualBlock3D",
     "StemBlock3D",

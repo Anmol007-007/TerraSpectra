@@ -11,7 +11,14 @@ from terraspectra.training.losses import (
     WeightedCrossEntropyLoss,
     compute_class_weights,
 )
-from terraspectra.training.metrics import ConfusionMatrix, MetricCollection
+from terraspectra.training.metrics import (
+    ConfusionMatrix,
+    MetricCollection,
+    macro_f1,
+    mean_iou,
+    per_class_f1,
+    precision_recall_f1,
+)
 from terraspectra.training.trainer import (
     Trainer,
     configure_optimizers,
@@ -28,6 +35,10 @@ __all__ = [
     "DiceLoss",
     "ConfusionMatrix",
     "MetricCollection",
+    "precision_recall_f1",
+    "macro_f1",
+    "per_class_f1",
+    "mean_iou",
     "Trainer",
     "configure_optimizers",
     "get_cosine_schedule_with_warmup",

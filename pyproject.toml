@@ -97,6 +97,7 @@ files = ["src/terraspectra"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+norecursedirs = ["web", "node_modules", ".git", ".venv", "data", "models_store"]
 addopts = [
     "--strict-markers",
     "--tb=short",

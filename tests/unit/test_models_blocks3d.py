@@ -7,6 +7,7 @@ import torch
 
 from terraspectra.models.blocks3d import (
     Conv3DBlock,
+    Dropout3D,
     GlobalPoolingHead,
     ResidualBlock3D,
     SESpectralAttention,
@@ -20,6 +21,21 @@ from terraspectra.models.cnn3d import (
     model_summary,
 )
 from terraspectra.models.registry import ModelRegistry, model_registry
+
+
+def test_dropout3d_wrapper() -> None:
+    """Test Dropout3D wrapper in both training and eval mode."""
+    drop = Dropout3D(p=0.5)
+    x = torch.ones(2, 4, 8, 8, 8)
+    drop.eval()
+    assert torch.allclose(drop(x), x)
+    drop.train()
+    out = drop(x)
+    assert out.shape == x.shape
+
+    # p=0 identity check
+    drop_zero = Dropout3D(p=0.0)
+    assert torch.allclose(drop_zero(x), x)
 
 
 def test_conv3d_block_shape() -> None:

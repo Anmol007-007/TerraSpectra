@@ -18,7 +18,14 @@ from terraspectra.training.losses import (
     WeightedCrossEntropyLoss,
     compute_class_weights,
 )
-from terraspectra.training.metrics import ConfusionMatrix, MetricCollection
+from terraspectra.training.metrics import (
+    ConfusionMatrix,
+    MetricCollection,
+    macro_f1,
+    mean_iou,
+    per_class_f1,
+    precision_recall_f1,
+)
 from terraspectra.training.trainer import (
     Trainer,
     configure_optimizers,
@@ -81,6 +88,21 @@ def test_metrics_collection() -> None:
     metrics.update(imperfect_preds, targets)
     res2 = metrics.compute()
     assert 0.0 < res2["accuracy"] < 1.0
+
+
+def test_standalone_metric_functions() -> None:
+    """Test standalone functional metrics."""
+    preds = torch.tensor([0, 1, 2, 1, 0], dtype=torch.int64)
+    targets = torch.tensor([0, 1, 2, 1, 0], dtype=torch.int64)
+
+    prf = precision_recall_f1(preds, targets, num_classes=3)
+    assert prf["accuracy"] == 1.0
+    assert prf["macro_f1"] == 1.0
+    assert prf["per_class"]["class_0"]["f1"] == 1.0
+
+    assert macro_f1(preds, targets, num_classes=3) == 1.0
+    assert per_class_f1(preds, targets, num_classes=3) == [1.0, 1.0, 1.0]
+    assert mean_iou(preds, targets, num_classes=3) == 1.0
 
 
 def test_trainer_overfit_tiny_batch() -> None:

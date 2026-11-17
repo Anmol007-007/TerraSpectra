@@ -111,3 +111,82 @@ class MetricCollection:
         metrics["confusion_matrix"] = matrix.to(torch.int64).tolist()
 
         return metrics
+
+
+def precision_recall_f1(
+    preds: Tensor, targets: Tensor, num_classes: int = 3
+) -> dict[str, Any]:
+    """Compute precision, recall, and F1 score for multiclass predictions.
+
+    Args:
+        preds: Predicted class labels or logits tensor.
+        targets: Target ground-truth labels tensor.
+        num_classes: Number of distinct classes (default 3).
+
+    Returns:
+        Dictionary of precision, recall, and F1 per class and macro-averaged.
+    """
+    metrics = MetricCollection(num_classes=num_classes)
+    metrics.update(preds, targets)
+    res = metrics.compute()
+    return {
+        "accuracy": res["accuracy"],
+        "macro_f1": res["macro_f1"],
+        "per_class": {
+            f"class_{i}": {
+                "precision": res.get(f"precision_class_{i}", 0.0),
+                "recall": res.get(f"recall_class_{i}", 0.0),
+                "f1": res.get(f"f1_class_{i}", 0.0),
+            }
+            for i in range(num_classes)
+        },
+    }
+
+
+def macro_f1(preds: Tensor, targets: Tensor, num_classes: int = 3) -> float:
+    """Compute macro-averaged F1 score across all classes.
+
+    Args:
+        preds: Predicted class labels or logits tensor.
+        targets: Target ground-truth labels tensor.
+        num_classes: Number of distinct classes (default 3).
+
+    Returns:
+        Macro-F1 score as a float between 0.0 and 1.0.
+    """
+    metrics = MetricCollection(num_classes=num_classes)
+    metrics.update(preds, targets)
+    return float(metrics.compute()["macro_f1"])
+
+
+def per_class_f1(preds: Tensor, targets: Tensor, num_classes: int = 3) -> list[float]:
+    """Compute F1 score individually for each class index.
+
+    Args:
+        preds: Predicted class labels or logits tensor.
+        targets: Target ground-truth labels tensor.
+        num_classes: Number of distinct classes (default 3).
+
+    Returns:
+        List of F1 scores of length num_classes.
+    """
+    metrics = MetricCollection(num_classes=num_classes)
+    metrics.update(preds, targets)
+    res = metrics.compute()
+    return [float(res.get(f"f1_class_{i}", 0.0)) for i in range(num_classes)]
+
+
+def mean_iou(preds: Tensor, targets: Tensor, num_classes: int = 3) -> float:
+    """Compute mean Intersection-over-Union (mIoU) across all classes.
+
+    Args:
+        preds: Predicted class labels or logits tensor.
+        targets: Target ground-truth labels tensor.
+        num_classes: Number of distinct classes (default 3).
+
+    Returns:
+        mIoU score as a float between 0.0 and 1.0.
+    """
+    metrics = MetricCollection(num_classes=num_classes)
+    metrics.update(preds, targets)
+    return float(metrics.compute()["mIoU"])

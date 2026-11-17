@@ -13,6 +13,18 @@ import torch.nn as nn
 from torch import Tensor
 
 
+class Dropout3D(nn.Module):
+    """Wrapper around PyTorch nn.Dropout3d with clean pass-through when p=0.0."""
+
+    def __init__(self, p: float = 0.1) -> None:
+        super().__init__()
+        self.p = p
+        self.drop = nn.Dropout3d(p=p) if p > 0.0 else nn.Identity()
+
+    def forward(self, x: Tensor) -> Tensor:
+        return self.drop(x)
+
+
 class Conv3DBlock(nn.Module):
     """Standard 3D convolutional block with Batch Normalization and GELU activation.
 
@@ -103,7 +115,7 @@ class ResidualBlock3D(nn.Module):
         )
         self.bn2 = nn.BatchNorm3d(out_channels)
         self.se = SESpectralAttention(out_channels) if use_se else nn.Identity()
-        self.dropout = nn.Dropout3d(p=dropout) if dropout > 0.0 else nn.Identity()
+        self.dropout = Dropout3D(p=dropout)
         self.act = nn.GELU()
 
         # Shortcut projection if dimension or stride changes
