@@ -55,6 +55,15 @@ export const MapContainer: React.FC = () => {
     }));
   };
 
+  const handleZoomToPixel = (lon: number, lat: number) => {
+    setViewState((prev) => ({
+      ...prev,
+      longitude: lon,
+      latitude: lat,
+      zoom: 16.5,
+    }));
+  };
+
   return (
     <div className="relative w-full h-full overflow-hidden" data-testid="map-viewport">
       <BaseMap initialViewState={viewState}>
@@ -70,7 +79,7 @@ export const MapContainer: React.FC = () => {
 
       {/* Interactive Pixel Inspector Overlay */}
       <div className="absolute top-4 right-4 z-10">
-        <PixelInspector />
+        <PixelInspector onZoomToPixel={handleZoomToPixel} />
       </div>
 
       {/* Fly-to-farm reset camera button */}

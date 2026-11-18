@@ -79,11 +79,13 @@ class FocalLoss(nn.Module):
         alpha: Optional[Tensor] = None,
         gamma: float = 2.0,
         reduction: str = "mean",
+        label_smoothing: float = 0.0,
     ) -> None:
         super().__init__()
         self.alpha = alpha
         self.gamma = gamma
         self.reduction = reduction
+        self.label_smoothing = label_smoothing
 
     def forward(self, logits: Tensor, targets: Tensor) -> Tensor:
         """Forward pass.
@@ -92,7 +94,9 @@ class FocalLoss(nn.Module):
             logits: Unnormalized network predictions [B, num_classes].
             targets: Integer class labels [B].
         """
-        ce_loss = F.cross_entropy(logits, targets, reduction="none")  # [B]
+        ce_loss = F.cross_entropy(
+            logits, targets, reduction="none", label_smoothing=self.label_smoothing
+        )  # [B]
         pt = torch.exp(-ce_loss)  # p_t
         focal_weight = (1.0 - pt) ** self.gamma
 

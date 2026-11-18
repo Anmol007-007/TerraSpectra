@@ -37,6 +37,9 @@ class Settings(BaseSettings):
     models_dir: Path = Field(
         default=Path("models_store"), description="Path to model checkpoints store"
     )
+    reports_dir: Path = Field(
+        default=Path("reports"), description="Path to reports and figures store"
+    )
     device: DeviceType = Field(
         default="auto", description="Compute device selection ('auto', 'cpu', or 'cuda')"
     )

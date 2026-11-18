@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import subprocess
 from pathlib import Path
 from typing import Any
 
@@ -37,3 +38,14 @@ def hash_dict(data: dict[str, Any]) -> str:
     """
     canonical_json = json.dumps(data, sort_keys=True, separators=(",", ":"), default=str)
     return hashlib.sha256(canonical_json.encode("utf-8")).hexdigest()
+
+
+def get_git_hash(repo_dir: str | Path | None = None) -> str:
+    """Return HEAD commit hash or 'unknown' if not in git repo."""
+    try:
+        cmd = ["git", "rev-parse", "HEAD"]
+        cwd = str(repo_dir) if repo_dir else None
+        res = subprocess.run(cmd, capture_output=True, text=True, check=True, cwd=cwd)
+        return res.stdout.strip()
+    except Exception:
+        return "unknown"

@@ -12,7 +12,9 @@ RED_EDGE_MAX_NM: float = 750.0
 
 # Sensor
 GSD_M: float = 30.0  # Ground sampling distance in metres (Hyperion-like)
+GSD_METRES: float = GSD_M
 PIXEL_AREA_M2: float = GSD_M ** 2  # 900 m²
+M2_PER_ACRE: float = 4046.8564
 ACRES_PER_M2: float = 1.0 / 4046.8564  # 1 acre = 4046.8564 m²
 PIXEL_AREA_ACRES: float = PIXEL_AREA_M2 * ACRES_PER_M2  # ≈ 0.2224 acres
 

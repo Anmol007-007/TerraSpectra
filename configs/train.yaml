@@ -1,0 +1,45 @@
+# Training hyperparameters and experiment tracking configuration
+training:
+  batch_size: 16
+  epochs: 20
+  lr: 0.001
+  min_lr: 0.00001
+  weight_decay: 0.01
+  warmup_epochs: 2
+  grad_clip_norm: 1.0
+  use_amp: false
+  num_workers: 0
+  seed: 42
+  device: "auto"
+
+model:
+  architecture: "cnn3d_v1"
+  in_channels: 1
+  depth: 32
+  patch_size: 11
+  base_channels: 16
+  num_classes: 3
+  dropout: 0.1
+
+loss:
+  type: "focal" # cross_entropy, focal, weighted_ce, dice
+  focal_gamma: 2.0
+  label_smoothing: 0.05
+  use_class_weights: true
+
+imbalance:
+  sampler: "weighted" # none, weighted
+  use_ema: true
+  ema_decay: 0.999
+
+checkpoint:
+  save_dir: "models_store"
+  save_best_only: true
+  monitor: "val_macro_f1"
+  mode: "max"
+  patience: 10
+
+logging:
+  log_dir: "reports/runs"
+  use_tensorboard: true
+  use_csv: true

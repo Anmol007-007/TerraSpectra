@@ -66,10 +66,12 @@ models_store/*
 data/**/*.tif
 data/**/*.img
 
-# Reports - figures (generated)
+# Reports - figures and generated run outputs
 reports/figures/*.png
 reports/figures/*.pdf
 reports/figures/*.svg
+reports/runs/
+reports/evaluations/
 
 # Environment / secrets
 .env
