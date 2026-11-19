@@ -1,0 +1,56 @@
+{
+  "crs": "EPSG:4326",
+  "bounds": [
+    77.09,
+    28.61,
+    77.1105,
+    28.6285
+  ],
+  "grid_shape": [
+    67,
+    67
+  ],
+  "gsd_m": 30.0,
+  "gcps": [
+    {
+      "id": "NW_CORNER",
+      "name": "Northwest Boundary Corner",
+      "row": 0,
+      "col": 0,
+      "lon": 77.090153,
+      "lat": 28.6283619
+    },
+    {
+      "id": "NE_CORNER",
+      "name": "Northeast Boundary Corner",
+      "row": 0,
+      "col": 66,
+      "lon": 77.110347,
+      "lat": 28.6283619
+    },
+    {
+      "id": "CENTER",
+      "name": "Farm Geographic Center",
+      "row": 33,
+      "col": 33,
+      "lon": 77.10025,
+      "lat": 28.61925
+    },
+    {
+      "id": "SW_CORNER",
+      "name": "Southwest Boundary Corner",
+      "row": 66,
+      "col": 0,
+      "lon": 77.090153,
+      "lat": 28.6101381
+    },
+    {
+      "id": "SE_CORNER",
+      "name": "Southeast Boundary Corner",
+      "row": 66,
+      "col": 66,
+      "lon": 77.110347,
+      "lat": 28.6101381
+    }
+  ]
+}

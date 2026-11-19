@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { BaseMap } from "./BaseMap";
 import { DeckGLOverlay } from "./DeckGLOverlay";
 import { PixelInspector } from "./PixelInspector";
+import { Crosshair } from "./Crosshair";
+import { CoordinateReadout } from "./CoordinateReadout";
 import { buildDeckLayers } from "../layers/layerRegistry";
 import { useLayerStore } from "../store/layerStore";
 import { FARM_BOUNDS, fitBounds } from "../utils/geo";
@@ -80,6 +82,14 @@ export const MapContainer: React.FC = () => {
       {/* Interactive Pixel Inspector Overlay */}
       <div className="absolute top-4 right-4 z-10">
         <PixelInspector onZoomToPixel={handleZoomToPixel} />
+      </div>
+
+      {/* Crosshair Alignment Reticle (active when GCP layer or inspector is in use) */}
+      <Crosshair visible={!!visibility.gcps} />
+
+      {/* Real-time Coordinate Readout HUD */}
+      <div className="absolute bottom-6 left-6 z-10">
+        <CoordinateReadout cursorLonLat={[viewState.longitude, viewState.latitude]} />
       </div>
 
       {/* Fly-to-farm reset camera button */}

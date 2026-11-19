@@ -52,3 +52,72 @@ export const FARM_BOUNDS: BoundingBox = {
   maxLon: 77.1105,
   maxLat: 28.6285,
 };
+
+/**
+ * Convert raster pixel indices (row, col) to WGS84 geographic coordinates (lon, lat).
+ * Adheres to half-pixel center offset convention (r + 0.5, c + 0.5).
+ */
+export function pixelToLonLat(
+  row: number,
+  col: number,
+  bounds: BoundingBox = FARM_BOUNDS,
+  gridShape: [number, number] = [67, 67],
+  centerOffset: boolean = true,
+): [number, number] {
+  const { minLon, minLat, maxLon, maxLat } = bounds;
+  const [numRows, numCols] = gridShape;
+
+  const rEff = row + (centerOffset ? 0.5 : 0.0);
+  const cEff = col + (centerOffset ? 0.5 : 0.0);
+
+  const lonStep = (maxLon - minLon) / numCols;
+  const latStep = (maxLat - minLat) / numRows;
+
+  const lon = minLon + cEff * lonStep;
+  const lat = maxLat - rEff * latStep;
+
+  return [Math.round(lon * 1e7) / 1e7, Math.round(lat * 1e7) / 1e7];
+}
+
+/**
+ * Convert WGS84 coordinates (lon, lat) to continuous raster pixel indices (row, col).
+ */
+export function lonLatToPixel(
+  lon: number,
+  lat: number,
+  bounds: BoundingBox = FARM_BOUNDS,
+  gridShape: [number, number] = [67, 67],
+): [number, number] {
+  const { minLon, minLat, maxLon, maxLat } = bounds;
+  const [numRows, numCols] = gridShape;
+
+  const c = ((lon - minLon) / (maxLon - minLon)) * numCols - 0.5;
+  const r = ((maxLat - lat) / (maxLat - minLat)) * numRows - 0.5;
+
+  return [Math.round(r * 1e6) / 1e6, Math.round(c * 1e6) / 1e6];
+}
+
+/**
+ * Compute the bounding polygon coordinates for a raster grid cell [row, col]
+ * strictly adhering to the half-pixel centering convention.
+ */
+export function pixelIndexToPolygon(
+  row: number,
+  col: number,
+  bounds: BoundingBox = FARM_BOUNDS,
+  gridShape: [number, number] = [67, 67],
+): [number, number][] {
+  const [centerLon, centerLat] = pixelToLonLat(row, col, bounds, gridShape, true);
+  const { minLon, minLat, maxLon, maxLat } = bounds;
+  const [rows, cols] = gridShape;
+  const halfStepLon = (maxLon - minLon) / (2 * cols);
+  const halfStepLat = (maxLat - minLat) / (2 * rows);
+
+  return [
+    [centerLon - halfStepLon, centerLat - halfStepLat],
+    [centerLon + halfStepLon, centerLat - halfStepLat],
+    [centerLon + halfStepLon, centerLat + halfStepLat],
+    [centerLon - halfStepLon, centerLat + halfStepLat],
+    [centerLon - halfStepLon, centerLat - halfStepLat],
+  ];
+}

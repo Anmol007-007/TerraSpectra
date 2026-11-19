@@ -6,6 +6,7 @@ import { GeoJsonLayer } from "@deck.gl/layers";
 import type { LayersList } from "@deck.gl/core";
 import { MOCK_FARM_BOUNDARY, MOCK_PARCELS } from "./farmBoundary";
 import { createPixelGridLayer } from "./pixelGridLayer";
+import { createGCPLayer } from "./gcpLayer";
 import mockPredictionData from "../api/mocks/farm_001_result.json";
 import type { FarmPredictionResult, PredictionCell } from "../types/heatmap";
 
@@ -17,6 +18,7 @@ export interface LayerVisibility {
   heatmap: boolean;
   zones: boolean;
   uncertainty: boolean;
+  gcps?: boolean;
 }
 
 export const DEFAULT_LAYER_VISIBILITY: LayerVisibility = {
@@ -25,6 +27,7 @@ export const DEFAULT_LAYER_VISIBILITY: LayerVisibility = {
   heatmap: true,
   zones: true,
   uncertainty: false,
+  gcps: false,
 };
 
 export interface DeckLayersOptions {
@@ -110,6 +113,15 @@ export function buildDeckLayers(
         onHover: opts.onHoverCell,
         onClick: opts.onClickCell,
         elevationScale: 40,
+      })
+    );
+  }
+
+  // 4. Ground Control Points (GCP) Calibration Markers Layer
+  if (visibility.gcps) {
+    layers.push(
+      createGCPLayer({
+        id: "layer-gcp-markers",
       })
     );
   }

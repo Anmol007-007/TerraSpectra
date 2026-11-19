@@ -95,8 +95,10 @@ class ResidualBlock3D(nn.Module):
         stride: Union[int, tuple[int, int, int]] = 1,
         use_se: bool = True,
         dropout: float = 0.0,
+        use_checkpointing: bool = False,
     ) -> None:
         super().__init__()
+        self.use_checkpointing = use_checkpointing
         self.conv1 = Conv3DBlock(
             in_channels=in_channels,
             out_channels=out_channels,
@@ -134,12 +136,19 @@ class ResidualBlock3D(nn.Module):
         else:
             self.shortcut = nn.Identity()
 
-    def forward(self, x: Tensor) -> Tensor:
-        res = self.shortcut(x)
+    def _inner_forward(self, x: Tensor) -> Tensor:
         out = self.conv1(x)
         out = self.bn2(self.conv2(out))
         out = self.se(out)
-        out = self.dropout(out)
+        return self.dropout(out)
+
+    def forward(self, x: Tensor) -> Tensor:
+        res = self.shortcut(x)
+        if self.use_checkpointing and self.training and x.requires_grad:
+            from torch.utils.checkpoint import checkpoint
+            out = checkpoint(self._inner_forward, x, use_reentrant=False)
+        else:
+            out = self._inner_forward(x)
         return self.act(out + res)
 
 

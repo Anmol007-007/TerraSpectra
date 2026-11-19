@@ -32,6 +32,7 @@ class CNN3DConfig:
     num_classes: int = 3  # 0: Healthy, 1: Pre-symptomatic (21-day), 2: Diseased
     dropout: float = 0.2
     use_se: bool = True
+    use_checkpointing: bool = False
     stem_kernel: tuple[int, int, int] = (3, 3, 3)
     extra: dict[str, Any] = field(default_factory=dict)
 
@@ -65,6 +66,7 @@ class CNN3DClassifier(nn.Module):
             stride=(1, 1, 1),
             use_se=config.use_se,
             dropout=config.dropout,
+            use_checkpointing=config.use_checkpointing,
         )
 
         # Stage 2: Spectral downsampling [B, c3, D/2, H, W]
@@ -74,6 +76,7 @@ class CNN3DClassifier(nn.Module):
             stride=(2, 1, 1),
             use_se=config.use_se,
             dropout=config.dropout,
+            use_checkpointing=config.use_checkpointing,
         )
 
         # Stage 3: Spectral & spatial downsampling [B, c4, D/4, H/2, W/2]
@@ -83,6 +86,7 @@ class CNN3DClassifier(nn.Module):
             stride=(2, 2, 2),
             use_se=config.use_se,
             dropout=config.dropout,
+            use_checkpointing=config.use_checkpointing,
         )
 
         # 3. Global Pooling and Feature Representation

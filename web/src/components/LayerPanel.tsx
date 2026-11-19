@@ -44,6 +44,9 @@ export const LayerPanel: React.FC<LayerPanelProps> = ({
         case "z":
           toggleLayer("zones");
           break;
+        case "g":
+          toggleLayer("gcps");
+          break;
         case "t":
           toggleTerrain3d();
           break;
@@ -89,6 +92,13 @@ export const LayerPanel: React.FC<LayerPanelProps> = ({
             onChange={() => toggleLayer("zones")}
             badge="Forecast"
             badgeColor="bg-[#f59e0b]"
+          />
+          <ToggleSwitch
+            label="GCP Calibration Markers"
+            checked={!!visibility.gcps}
+            onChange={() => toggleLayer("gcps")}
+            badge="GIS (5)"
+            badgeColor="bg-[#5bc0be] text-[#0b132b]"
           />
         </div>
       </div>
