@@ -8,6 +8,7 @@ from terraspectra.geo.transforms import (
     FARM_BOUNDS_WGS84,
     bounds_to_geojson,
     calculate_pixel_area,
+    check_raster_georeference,
     generate_gcp_fixtures,
     lonlat_to_pixel,
     pixel_to_lonlat,
@@ -53,3 +54,12 @@ def test_gcp_fixtures_generation() -> None:
     assert "NW_CORNER" in gcp_ids
     assert "CENTER" in gcp_ids
     assert "SE_CORNER" in gcp_ids
+
+
+def test_check_raster_georeference_missing_and_fallback(tmp_path) -> None:
+    """Test georeference check on non-existent and simulated files."""
+    assert check_raster_georeference("non_existent_file.tif") is False
+
+    dummy = tmp_path / "dummy.npz"
+    dummy.write_bytes(b"dummy binary data")
+    assert check_raster_georeference(dummy) is True

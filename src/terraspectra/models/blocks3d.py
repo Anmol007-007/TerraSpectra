@@ -11,6 +11,7 @@ from typing import Union
 import torch
 import torch.nn as nn
 from torch import Tensor
+from torch.utils.checkpoint import checkpoint
 
 
 class Dropout3D(nn.Module):
@@ -145,7 +146,6 @@ class ResidualBlock3D(nn.Module):
     def forward(self, x: Tensor) -> Tensor:
         res = self.shortcut(x)
         if self.use_checkpointing and self.training and x.requires_grad:
-            from torch.utils.checkpoint import checkpoint
             out = checkpoint(self._inner_forward, x, use_reentrant=False)
         else:
             out = self._inner_forward(x)

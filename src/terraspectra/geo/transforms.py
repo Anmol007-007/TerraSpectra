@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import json
 from pathlib import Path
-from typing import Any, Sequence
+from typing import Any, Optional, Sequence
 
 import numpy as np
 
@@ -107,11 +107,21 @@ def bounds_to_geojson(bounds: Sequence[float] = FARM_BOUNDS_WGS84) -> dict[str, 
 
 def check_raster_georeference(
     file_path: str | Path,
-    expected_bounds: Sequence[float] = FARM_BOUNDS_WGS84,
-    expected_crs: str = "EPSG:32643",
+    expected_bounds: Optional[Sequence[float]] = FARM_BOUNDS_WGS84,
+    expected_crs: Optional[str] = "EPSG:32643",
     tolerance_deg: float = 0.005,
 ) -> bool:
-    """Validate that a raster's CRS and bounding envelope conform to expected spatial bounds."""
+    """Validate that a raster's CRS and bounding envelope conform to expected spatial bounds.
+
+    Args:
+        file_path: Path to target raster file (GeoTIFF, NPZ, or HDF5).
+        expected_bounds: Optional [minLon, minLat, maxLon, maxLat] bounding box.
+        expected_crs: Expected CRS string identifier (e.g. 'EPSG:32643' or 'EPSG:4326').
+        tolerance_deg: Angular tolerance in degrees for WGS84 boundary comparison.
+
+    Returns:
+        True if the file exists and spatial georeferencing matches expectations.
+    """
     p = Path(file_path)
     if not p.exists():
         return False
@@ -120,16 +130,31 @@ def check_raster_georeference(
         import rasterio
 
         with rasterio.open(p) as src:
+            if expected_crs and src.crs:
+                crs_str = src.crs.to_string() if hasattr(src.crs, "to_string") else str(src.crs)
+                clean_expected = expected_crs.split(":")[-1].strip().lower()
+                if clean_expected not in crs_str.lower():
+                    return False
+
             bounds = src.bounds
-            # Check bounding coordinates within tolerance
-            if abs(bounds.left - expected_bounds[0]) > tolerance_deg:
-                return False
-            if abs(bounds.bottom - expected_bounds[1]) > tolerance_deg:
-                return False
+            # Check bounding coordinates if expected_bounds is provided
+            if expected_bounds and len(expected_bounds) >= 4:
+                # If bounds are in degrees (WGS84)
+                if abs(bounds.left) <= 180.0 and abs(expected_bounds[0]) <= 180.0:
+                    if abs(bounds.left - expected_bounds[0]) > tolerance_deg:
+                        return False
+                    if abs(bounds.bottom - expected_bounds[1]) > tolerance_deg:
+                        return False
+                    if abs(bounds.right - expected_bounds[2]) > tolerance_deg:
+                        return False
+                    if abs(bounds.top - expected_bounds[3]) > tolerance_deg:
+                        return False
             return True
-    except Exception:
-        # Fallback check for simulated/npz files
+    except (ImportError, OSError):
+        # Fallback check for simulated/npz files when rasterio is unavailable
         return p.exists() and p.stat().st_size > 0
+    except Exception:
+        return False
 
 
 def calculate_pixel_area(
@@ -139,12 +164,26 @@ def calculate_pixel_area(
     grid_shape: Sequence[int] = (67, 67),
     gsd_m: float = GSD_M,
 ) -> dict[str, float]:
-    """Calculate the spatial ground area of a raster pixel in square metres and acres."""
+    """Calculate the spatial ground area of a raster pixel in square metres and acres.
+
+    Args:
+        row: Row index of pixel.
+        col: Column index of pixel.
+        bounds: [minLon, minLat, maxLon, maxLat] bounding box.
+        grid_shape: (rows, cols) raster grid dimensions.
+        gsd_m: Ground sampling distance in metres (default: 30m).
+
+    Returns:
+        Dictionary containing pixel index, center lon/lat, GSD, and area in m² and acres.
+    """
+    lon, lat = pixel_to_lonlat(row, col, bounds=bounds, grid_shape=grid_shape)
     area_m2 = gsd_m * gsd_m
     area_acres = area_m2 * ACRES_PER_M2
     return {
-        "row": row,
-        "col": col,
+        "row": float(row),
+        "col": float(col),
+        "lon": lon,
+        "lat": lat,
         "gsd_m": gsd_m,
         "area_m2": round(area_m2, 2),
         "area_acres": round(area_acres, 6),

@@ -3,33 +3,29 @@
  */
 
 import { ScatterplotLayer } from "@deck.gl/layers";
-import gcpFixtures from "../tests/fixtures/gcp_fixtures.json";
+import type { PickingInfo } from "@deck.gl/core";
+import { CANONICAL_GCPS, type GCPPoint } from "../utils/geo";
 
-export interface GCPPoint {
-  id: string;
-  name: string;
-  row: number;
-  col: number;
-  lon: number;
-  lat: number;
-}
+export type { GCPPoint };
 
 export interface GCPLayerOptions {
   id?: string;
+  data?: GCPPoint[];
   visible?: boolean;
-  onHover?: (info: { object?: GCPPoint; x: number; y: number }) => void;
-  onClick?: (info: { object?: GCPPoint; x: number; y: number }) => void;
+  onHover?: (info: PickingInfo<GCPPoint>) => void;
+  onClick?: (info: PickingInfo<GCPPoint>) => void;
 }
 
 export function createGCPLayer({
   id = "layer-gcp-markers",
+  data = CANONICAL_GCPS,
   visible = true,
   onHover,
   onClick,
 }: GCPLayerOptions = {}): ScatterplotLayer {
   return new ScatterplotLayer<GCPPoint>({
     id,
-    data: gcpFixtures.gcps as GCPPoint[],
+    data,
     visible,
     pickable: true,
     opacity: 0.95,
@@ -44,7 +40,7 @@ export function createGCPLayer({
     getFillColor: (d: GCPPoint) =>
       d.id === "CENTER" ? [239, 68, 68, 220] : [91, 192, 190, 220], // Red for Center, Cyan for Corners
     getLineColor: [255, 255, 255, 255],
-    onHover: onHover as any,
-    onClick: onClick as any,
+    onHover: onHover ? (info) => onHover(info as PickingInfo<GCPPoint>) : undefined,
+    onClick: onClick ? (info) => onClick(info as PickingInfo<GCPPoint>) : undefined,
   });
 }

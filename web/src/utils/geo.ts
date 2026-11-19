@@ -53,6 +53,61 @@ export const FARM_BOUNDS: BoundingBox = {
   maxLat: 28.6285,
 };
 
+export interface GCPPoint {
+  id: string;
+  name: string;
+  row: number;
+  col: number;
+  lon: number;
+  lat: number;
+}
+
+/**
+ * Canonical 5 Ground Control Points (GCPs) for 1,000-acre farm parcel alignment.
+ */
+export const CANONICAL_GCPS: GCPPoint[] = [
+  {
+    id: "NW_CORNER",
+    name: "Northwest Boundary Corner",
+    row: 0,
+    col: 0,
+    lon: 77.090153,
+    lat: 28.6283619,
+  },
+  {
+    id: "NE_CORNER",
+    name: "Northeast Boundary Corner",
+    row: 0,
+    col: 66,
+    lon: 77.110347,
+    lat: 28.6283619,
+  },
+  {
+    id: "CENTER",
+    name: "Farm Geographic Center",
+    row: 33,
+    col: 33,
+    lon: 77.10025,
+    lat: 28.61925,
+  },
+  {
+    id: "SW_CORNER",
+    name: "Southwest Boundary Corner",
+    row: 66,
+    col: 0,
+    lon: 77.090153,
+    lat: 28.6101381,
+  },
+  {
+    id: "SE_CORNER",
+    name: "Southeast Boundary Corner",
+    row: 66,
+    col: 66,
+    lon: 77.110347,
+    lat: 28.6101381,
+  },
+];
+
 /**
  * Convert raster pixel indices (row, col) to WGS84 geographic coordinates (lon, lat).
  * Adheres to half-pixel center offset convention (r + 0.5, c + 0.5).

@@ -140,7 +140,7 @@ class Trainer:
         num_batches = 0
         self.optimizer.zero_grad()
 
-        total_iterations = len(train_loader)
+        total_iterations = len(train_loader) if hasattr(train_loader, "__len__") else None
 
         for batch_idx, batch in enumerate(train_loader):
             x, y = self._extract_batch_inputs(batch)

@@ -9,8 +9,8 @@ interface CoordinateReadoutProps {
 export const CoordinateReadout: React.FC<CoordinateReadoutProps> = ({ cursorLonLat }) => {
   const { hoveredCell } = useLayerStore();
 
-  let lon = cursorLonLat ? cursorLonLat[0] : hoveredCell ? hoveredCell.lon : 77.10025;
-  let lat = cursorLonLat ? cursorLonLat[1] : hoveredCell ? hoveredCell.lat : 28.61925;
+  const lon = cursorLonLat?.[0] ?? hoveredCell?.lon ?? 77.10025;
+  const lat = cursorLonLat?.[1] ?? hoveredCell?.lat ?? 28.61925;
 
   let row: number | null = null;
   let col: number | null = null;
