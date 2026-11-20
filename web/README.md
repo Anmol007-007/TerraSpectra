@@ -3,10 +3,18 @@
 React 18 + TypeScript + Vite + Deck.gl 9 + Mapbox GL 3D satellite visualization platform.
 
 ## Features
-- **3D Geospatial Viewer**: Deck.gl layers over Mapbox/MapLibre satellite imagery.
-- **Hyperspectral Blight Forecasting**: Highlight 5-acre pre-symptomatic blight risk zones on 1,000-acre agricultural parcels.
-- **Analytics Panel**: Acreage breakdown, spectral anomaly diagnostics.
-- **Timeline Slider**: Historical playback of crop spectral changes.
+- **3D Geospatial Viewer**: Deck.gl 9 layers over Mapbox/MapLibre satellite imagery with 3D elevation pitch.
+- **Hyperspectral Blight Forecasting**: Highlight 5-acre pre-symptomatic blight risk zones on 1,000-acre agricultural parcels 21 days before visible symptoms.
+- **Interactive Pixel Inspector**: Real-time HUD inspecting individual 30m GSD cells, risk probabilities, severity, uncertainty, and estimated days to symptoms.
+- **Ground Control Point (GCP) Calibration**: Visual validation markers and reticle crosshair verifying sub-pixel alignment ($\le 0.5$ pixel / $<15$m error).
+- **Coordinate Readout HUD**: Live WGS84, raster pixel [R, C], and Web Mercator meters display.
+- **Keyboard Shortcuts**:
+  - `F`: Toggle 1,000-Acre Farm Boundary
+  - `P`: Toggle Agricultural Parcels
+  - `H`: Toggle Disease Risk Heatmap
+  - `Z`: Toggle 5-Acre Blight Hotspot Zone
+  - `G`: Toggle GCP Calibration Markers
+  - `T`: Toggle 3D Topographic Terrain
 
 ## Quick Start
 ```bash

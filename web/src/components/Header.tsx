@@ -1,4 +1,5 @@
 import React from "react";
+import { useUiStore } from "../store/uiStore";
 
 interface HeaderProps {
   sceneId?: string;
@@ -11,9 +12,18 @@ export const Header: React.FC<HeaderProps> = ({
   onRunPrediction,
   isRunning = false,
 }) => {
+  const { toggleSidebar } = useUiStore();
+
   return (
     <header className="h-14 bg-[#1c2541] border-b border-[#3a506b] px-4 flex items-center justify-between z-10">
       <div className="flex items-center space-x-3">
+        <button
+          onClick={toggleSidebar}
+          aria-label="Toggle Sidebar"
+          className="text-slate-300 hover:text-white p-1 rounded hover:bg-[#3a506b]/40 focus:outline-none"
+        >
+          <span className="text-lg">☰</span>
+        </button>
         <span className="text-xl">🌿</span>
         <h1 className="font-bold text-lg text-slate-100 tracking-wide">
           TerraSpectra <span className="text-xs font-normal text-[#5bc0be] ml-1">Hyperspectral AI</span>

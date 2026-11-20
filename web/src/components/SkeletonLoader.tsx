@@ -28,3 +28,18 @@ export const CardSkeleton: React.FC = () => {
     </div>
   );
 };
+
+export const MapLoadingSkeleton: React.FC = () => {
+  return (
+    <div
+      data-testid="map-loading-skeleton"
+      className="absolute inset-0 bg-[#0b132b]/80 backdrop-blur-sm z-20 flex flex-col items-center justify-center space-y-4"
+    >
+      <div className="w-12 h-12 border-4 border-[#5bc0be]/30 border-t-[#5bc0be] rounded-full animate-spin" />
+      <div className="text-center space-y-1">
+        <p className="text-sm font-semibold text-slate-200">Loading Hyperspectral Raster Cube...</p>
+        <p className="text-xs text-slate-400 font-mono">Aligning 30m GSD grid to WGS84 coordinates</p>
+      </div>
+    </div>
+  );
+};

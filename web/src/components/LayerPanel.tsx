@@ -148,6 +148,7 @@ export const LayerPanel: React.FC<LayerPanelProps> = ({
               max={60}
               step={5}
               value={pitch}
+              aria-label="Camera Pitch (3D Tilt)"
               onChange={(e) => onPitchChange?.(parseFloat(e.target.value))}
               className="w-full h-1.5 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-[#5bc0be]"
             />

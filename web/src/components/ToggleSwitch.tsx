@@ -30,9 +30,13 @@ export const ToggleSwitch: React.FC<ToggleSwitchProps> = ({
         )}
       </div>
 
-      <div
+      <button
+        type="button"
+        role="switch"
+        aria-checked={checked}
+        aria-label={label}
         onClick={() => onChange(!checked)}
-        className={`w-9 h-5 flex items-center rounded-full p-1 transition-colors duration-200 ease-in-out ${
+        className={`w-9 h-5 flex items-center rounded-full p-1 transition-colors duration-200 ease-in-out focus:outline-none focus:ring-1 focus:ring-[#5bc0be] ${
           checked ? "bg-[#5bc0be]" : "bg-slate-700"
         }`}
       >
@@ -41,7 +45,7 @@ export const ToggleSwitch: React.FC<ToggleSwitchProps> = ({
             checked ? "translate-x-4" : "translate-x-0"
           }`}
         />
-      </div>
+      </button>
     </label>
   );
 };

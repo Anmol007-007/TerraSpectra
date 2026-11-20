@@ -33,6 +33,7 @@ export const OpacitySlider: React.FC<OpacitySliderProps> = ({
         max={max}
         step={step}
         value={value}
+        aria-label={label}
         onChange={(e) => onChange(parseFloat(e.target.value))}
         className={`w-full h-1.5 bg-slate-700 rounded-lg appearance-none cursor-pointer ${accentColor}`}
       />

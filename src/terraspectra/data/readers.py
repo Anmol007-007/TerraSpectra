@@ -11,9 +11,30 @@ import numpy as np
 from numpy.typing import NDArray
 
 from terraspectra.core.constants import DEFAULT_CRS, GSD_M, NODATA
-from terraspectra.core.errors import DataError, SceneNotFoundError
+from terraspectra.core.errors import (
+    CorruptRasterError,
+    DataError,
+    EmptyRasterError,
+    InvalidCRSError,
+    SceneNotFoundError,
+)
 from terraspectra.core.schemas import GeoBounds, SceneMetadata
 from terraspectra.data.windows import Window, WindowLRUCache
+
+
+def is_nodata_window(arr: np.ndarray, nodata: float = NODATA) -> bool:
+    """Check if all pixels in an extracted window are NoData or NaN.
+
+    Args:
+        arr: Extracted raster array window.
+        nodata: Specific constant representing unmeasured or masked values.
+
+    Returns:
+        True if all elements match nodata or are NaN; False otherwise.
+    """
+    if arr.size == 0:
+        return True
+    return bool(np.all((arr == nodata) | np.isnan(arr)))
 
 
 class CubeReader(ABC):
@@ -131,6 +152,16 @@ class GeoTiffReader(CubeReader):
         else:
             self._npz_data = np.load(self.path)
 
+        self._validate_raster()
+
+    def _validate_raster(self) -> None:
+        """Validate raster integrity and non-empty dimensions."""
+        b, r, c = self.shape
+        if b <= 0 or r <= 0 or c <= 0:
+            raise EmptyRasterError(
+                f"Raster '{self.path}' has empty dimensions: (bands={b}, rows={r}, cols={c})"
+            )
+
     @property
     def shape(self) -> tuple[int, int, int]:
         if self._rasterio_ds:
@@ -202,8 +233,17 @@ class GeoTiffReader(CubeReader):
                 zw = out_shape[1] / arr.shape[2]
                 arr = zoom(arr, (1.0, zh, zw), order=1)
 
-        self._cache.put(window, arr)
-        return arr.astype(np.float32)
+        # Convert non-native byteorder (e.g. big-endian) to native byteorder
+        if arr.dtype.byteorder not in ("=", "|"):
+            arr = arr.byteswap().view(arr.dtype.newbyteorder("="))
+
+        # If single-band 2D array, promote to 3D [1, H, W]
+        if arr.ndim == 2:
+            arr = arr[np.newaxis, :, :]
+
+        res = arr.astype(np.float32, copy=False)
+        self._cache.put(window, res)
+        return res
 
 
 class Hdf5Reader(CubeReader):
@@ -226,6 +266,16 @@ class Hdf5Reader(CubeReader):
                     raise DataError(f"Cannot read HDF5: {self.path}")
         else:
             self._npz_data = np.load(self.path)
+
+        self._validate_raster()
+
+    def _validate_raster(self) -> None:
+        """Validate raster integrity and non-empty dimensions."""
+        b, r, c = self.shape
+        if b <= 0 or r <= 0 or c <= 0:
+            raise EmptyRasterError(
+                f"Raster '{self.path}' has empty dimensions: (bands={b}, rows={r}, cols={c})"
+            )
 
     @property
     def shape(self) -> tuple[int, int, int]:
@@ -276,8 +326,17 @@ class Hdf5Reader(CubeReader):
             zw = out_shape[1] / arr.shape[2]
             arr = zoom(arr, (1.0, zh, zw), order=1)
 
-        self._cache.put(window, arr)
-        return arr.astype(np.float32)
+        # Convert non-native byteorder (e.g. big-endian) to native byteorder
+        if arr.dtype.byteorder not in ("=", "|"):
+            arr = arr.byteswap().view(arr.dtype.newbyteorder("="))
+
+        # If single-band 2D array, promote to 3D [1, H, W]
+        if arr.ndim == 2:
+            arr = arr[np.newaxis, :, :]
+
+        res = arr.astype(np.float32, copy=False)
+        self._cache.put(window, res)
+        return res
 
 
 def get_reader(path: str | Path) -> CubeReader:

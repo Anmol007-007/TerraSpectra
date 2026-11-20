@@ -4,7 +4,7 @@ build-backend = "setuptools.backends.legacy:build"
 
 [project]
 name = "terraspectra"
-version = "0.1.0.dev0"
+version = "0.1.0"
 description = "Hyperspectral crop disease forecasting with 3D-CNN + ViT"
 readme = "README.md"
 license = { file = "LICENSE" }

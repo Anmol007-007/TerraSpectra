@@ -12,7 +12,8 @@
     "test:coverage": "vitest run --coverage",
     "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "format": "prettier --write src",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "analyze": "tsc && vite build"
   },
   "dependencies": {
     "@deck.gl/core": "^9.0.0",

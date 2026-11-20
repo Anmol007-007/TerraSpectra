@@ -11,6 +11,18 @@ class DataError(TerraSpectraError):
     """Raised when data loading, reading, or format validation fails."""
 
 
+class EmptyRasterError(DataError):
+    """Raised when an ingested raster has zero bands, rows, or columns."""
+
+
+class CorruptRasterError(DataError):
+    """Raised when a raster file is corrupted, truncated, or unreadable."""
+
+
+class InvalidCRSError(DataError):
+    """Raised when a raster has missing or invalid Coordinate Reference System."""
+
+
 class ShapeError(DataError):
     """Raised when a hyperspectral cube or patch has unexpected tensor dimensions."""
 
@@ -41,3 +53,20 @@ class SceneNotFoundError(APIError):
 
 class JobNotFoundError(APIError):
     """Raised when a requested inference job ID does not exist."""
+
+
+__all__ = [
+    "TerraSpectraError",
+    "DataError",
+    "EmptyRasterError",
+    "CorruptRasterError",
+    "InvalidCRSError",
+    "ShapeError",
+    "BandMismatchError",
+    "ModelError",
+    "TilingError",
+    "OutOfMemoryError",
+    "APIError",
+    "SceneNotFoundError",
+    "JobNotFoundError",
+]

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import { BaseMap } from "./BaseMap";
 import { DeckGLOverlay } from "./DeckGLOverlay";
 import { PixelInspector } from "./PixelInspector";
@@ -8,6 +8,7 @@ import { buildDeckLayers } from "../layers/layerRegistry";
 import { useLayerStore } from "../store/layerStore";
 import { FARM_BOUNDS, fitBounds } from "../utils/geo";
 import { MAP_DEFAULTS } from "../utils/tokens";
+import type { PredictionCell } from "../types/heatmap";
 
 export interface MapViewState {
   longitude: number;
@@ -37,15 +38,33 @@ export const MapContainer: React.FC = () => {
     setSelectedCell,
   } = useLayerStore();
 
-  const layers = buildDeckLayers({
-    visibility,
-    opacity: heatmapOpacity,
-    riskThreshold,
-    hoveredCell,
-    selectedCell,
-    onHoverCell: (info) => setHoveredCell(info.object || null),
-    onClickCell: (info) => setSelectedCell(info.object || null),
-  });
+  const handleHoverCell = useCallback(
+    (info: { object?: PredictionCell }) => {
+      setHoveredCell(info.object || null);
+    },
+    [setHoveredCell]
+  );
+
+  const handleClickCell = useCallback(
+    (info: { object?: PredictionCell }) => {
+      setSelectedCell(info.object || null);
+    },
+    [setSelectedCell]
+  );
+
+  const layers = useMemo(
+    () =>
+      buildDeckLayers({
+        visibility,
+        opacity: heatmapOpacity,
+        riskThreshold,
+        hoveredCell,
+        selectedCell,
+        onHoverCell: handleHoverCell,
+        onClickCell: handleClickCell,
+      }),
+    [visibility, heatmapOpacity, riskThreshold, hoveredCell, selectedCell, handleHoverCell, handleClickCell]
+  );
 
   const handleFlyToFarm = () => {
     const target = fitBounds(FARM_BOUNDS);

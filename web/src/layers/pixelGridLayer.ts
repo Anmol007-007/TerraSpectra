@@ -3,6 +3,7 @@
  */
 
 import { GridCellLayer } from "@deck.gl/layers";
+import type { PickingInfo } from "@deck.gl/core";
 import type { PredictionCell } from "../types/heatmap";
 import { riskToRgba } from "../utils/heatmap";
 
@@ -14,8 +15,8 @@ export interface PixelGridLayerOptions {
   selectedCell?: PredictionCell | null;
   hoveredCell?: PredictionCell | null;
   elevationScale?: number;
-  onHover?: (info: { object?: PredictionCell; x: number; y: number }) => void;
-  onClick?: (info: { object?: PredictionCell; x: number; y: number }) => void;
+  onHover?: (info: PickingInfo<PredictionCell>) => void;
+  onClick?: (info: PickingInfo<PredictionCell>) => void;
 }
 
 export function createPixelGridLayer({
@@ -58,9 +59,9 @@ export function createPixelGridLayer({
     },
     updateTriggers: {
       getFillColor: [opacity, selectedCell?.r, selectedCell?.c, hoveredCell?.r, hoveredCell?.c],
-      getElevation: [riskThreshold, selectedCell?.r, selectedCell?.c],
+      getElevation: [riskThreshold, selectedCell?.r, selectedCell?.c, elevationScale],
     },
-    onHover: onHover as any,
-    onClick: onClick as any,
+    onHover: onHover ? (info) => onHover(info as PickingInfo<PredictionCell>) : undefined,
+    onClick: onClick ? (info) => onClick(info as PickingInfo<PredictionCell>) : undefined,
   });
 }
