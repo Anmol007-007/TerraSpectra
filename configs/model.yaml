@@ -1,4 +1,4 @@
-# Model architecture hyperparameters for HybridCNNViT
+# Model architecture hyperparameters for HybridCNNViT and SpectralViT
 model:
   name: "HybridCNNViT"
   in_channels: 1
@@ -12,6 +12,15 @@ cnn_stem:
   res_channels: [32, 64]
   se_reduction: 8
   dropout: 0.1
+  use_se: true
+  stem_kernel: [3, 3, 3]
+
+adapter:
+  in_channels: 64
+  spectral_dim: 16
+  group_size: 4
+  spatial_pooling: "avg"
+  d_model: 128
 
 vit_backbone:
   d_model: 128
@@ -20,7 +29,10 @@ vit_backbone:
   n_heads: 4
   mlp_ratio: 4.0
   dropout: 0.1
+  attention_dropout: 0.1
   stochastic_depth: 0.1
+  pooling: "cls"
+  pos_embedding_type: "learned"
 
 heads:
   state_head:

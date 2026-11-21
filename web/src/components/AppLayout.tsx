@@ -22,11 +22,7 @@ export const AppLayout: React.FC<AppLayoutProps> = ({
           <div className="flex-1 relative">{children}</div>
           {bottomBar && <div className="h-20 border-t border-[#3a506b] bg-[#141d36]">{bottomBar}</div>}
         </main>
-        {rightPanel && (
-          <aside className="w-80 border-l border-[#3a506b] bg-[#141d36] overflow-y-auto">
-            {rightPanel}
-          </aside>
-        )}
+        {rightPanel}
       </div>
     </div>
   );

@@ -51,12 +51,12 @@ export function buildDeckLayers(
   const opts: DeckLayersOptions =
     "farmBoundary" in optionsOrVisibility
       ? {
-          visibility: optionsOrVisibility as LayerVisibility,
+          visibility: optionsOrVisibility,
           opacity: opacityParam,
           riskThreshold: riskThresholdParam,
           cells: cellsParam,
         }
-      : (optionsOrVisibility as DeckLayersOptions);
+      : optionsOrVisibility;
 
   const visibility = opts.visibility || DEFAULT_LAYER_VISIBILITY;
   const opacity = opts.opacity ?? 0.85;

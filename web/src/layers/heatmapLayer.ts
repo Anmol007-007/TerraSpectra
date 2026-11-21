@@ -42,6 +42,13 @@ export function createHeatmapLayer({
       getFillColor: [opacity],
       getElevation: [riskThreshold],
     },
-    onHover: onHover as any,
+    onHover: onHover
+      ? (info) => {
+          const obj = (typeof info.object === "object" && info.object !== null)
+            ? (info.object as PredictionCell)
+            : undefined;
+          onHover({ object: obj, x: info.x, y: info.y });
+        }
+      : undefined,
   });
 }

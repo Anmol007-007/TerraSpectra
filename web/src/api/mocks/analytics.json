@@ -1,0 +1,70 @@
+{
+  "sceneId": "farm_001",
+  "farmId": "GreenValley_1000Acres",
+  "timestamp": "2026-11-21T08:00:00Z",
+  "forecastHorizonDays": 21,
+  "totalAcres": 1000.0,
+  "acresAtRisk": 23.5,
+  "meanRisk": 0.38,
+  "meanUncertainty": 0.08,
+  "hotspot5AcreDetected": true,
+  "hotspotAcres": 5.2,
+  "breakdown": {
+    "totalAcres": 1000.0,
+    "healthyAcres": 920.0,
+    "stressedAcres": 74.8,
+    "diseasedAcres": 5.2,
+    "healthyPct": 92.0,
+    "stressedPct": 7.5,
+    "diseasedPct": 0.5
+  },
+  "distribution": [
+    {
+      "state": "healthy",
+      "label": "Healthy Crop",
+      "acres": 920.0,
+      "percentage": 92.0,
+      "color": "#10b981"
+    },
+    {
+      "state": "stressed",
+      "label": "Pre-Symptomatic Stress (~21d)",
+      "acres": 74.8,
+      "percentage": 7.5,
+      "color": "#f59e0b"
+    },
+    {
+      "state": "diseased",
+      "label": "Visible Blight",
+      "acres": 5.2,
+      "percentage": 0.5,
+      "color": "#ef4444"
+    }
+  ],
+  "anomalies": [
+    {
+      "id": "anom-1",
+      "label": "Red-Edge Shift (Chlorophyll loss)",
+      "wavelength_nm": 705.0,
+      "delta": -0.18,
+      "severity": "high",
+      "affectedAcres": 5.2
+    },
+    {
+      "id": "anom-2",
+      "label": "Photochemical Reflectance Index (PRI)",
+      "wavelength_nm": 531.0,
+      "delta": -0.12,
+      "severity": "medium",
+      "affectedAcres": 18.3
+    },
+    {
+      "id": "anom-3",
+      "label": "SWIR Leaf Moisture Absorption",
+      "wavelength_nm": 1200.0,
+      "delta": 0.09,
+      "severity": "low",
+      "affectedAcres": 22.0
+    }
+  ]
+}
